@@ -4,6 +4,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer components {
+  .section-container {
+    width: 91.666667%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-block: clamp(4rem, 8.3333vw, 7.5rem);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
