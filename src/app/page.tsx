@@ -2,6 +2,7 @@ import { FeaturesSection } from "@/components/sections/features-section";
 import { FooterSection } from "@/components/sections/footer-section";
 import { HeroSearchSection } from "@/components/sections/hero-search-section";
 import { JobDiscoverySection } from "@/components/sections/job-discovery-section";
+import PricingSection from "@/components/sections/pricing-section/pricing-section";
 import { StatsSection } from "@/components/sections/stats-section";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       </div>
       <JobDiscoverySection />
       <FeaturesSection />
+      <PricingSection />
       <FooterSection />
     </main>
   );
