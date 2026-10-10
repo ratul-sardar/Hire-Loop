@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # UI & Code Architecture Guidelines
 
 ## 1. shadcn/ui Component Rules & Composition
-* **Use Existing Components First:** Check `@/components/ui` or run `npx shadcn@latest search` before building custom UI.
+* **Use Existing Components First:** Check `@/components/ui` or run `npx shadcn@latest search` and try to find the required components form chadcnUi (https://ui.shadcn.com/docs/components) before building custom UI. If you build custom UI components, make sure to use chadcnUi's components if possible.
 * **Compose, Don't Reinvent:** 
   * Use `Separator` instead of `<hr>` or styled border `div`s.
   * Use `Badge` instead of custom styled `<span>` tags.

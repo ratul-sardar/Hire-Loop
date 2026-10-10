@@ -12,7 +12,7 @@ const actionClassName =
 
 function SiteNavbar() {
   return (
-    <header className="relative z-10 mx-auto w-full max-w-330 rounded-2xl bg-nav px-4 py-3 text-text-inverse sm:px-6.5">
+    <header className="fixed inset-x-0 top-5 z-10 mx-auto w-11/12 max-w-360 rounded-2xl bg-nav px-4 py-3 text-text-inverse sm:px-6.5">
       <div className="flex items-center justify-between gap-4">
         <a href="/" aria-label="HireLoop home" className="shrink-0">
           <Image

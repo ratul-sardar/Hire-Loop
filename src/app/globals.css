@@ -26,6 +26,8 @@
   --color-surface-950: var(--surface-950);
   --color-surface-900: var(--surface-900);
   --color-surface-800: var(--surface-800);
+  --color-surface-card: var(--surface-card);
+  --color-surface-chip: var(--surface-chip);
   --color-nav: var(--nav-surface);
   --font-sans: var(--font-manrope);
   --font-heading: var(--font-jakarta);
@@ -99,6 +101,8 @@
   --surface-950: #010103;
   --surface-900: #0b0b14;
   --surface-800: #191938;
+  --surface-card: #151516;
+  --surface-chip: #202020;
   --nav-surface: #222222;
   --card-gradient: linear-gradient(180deg, #010103 12%, #313131 100%);
   --background: oklch(1 0 0);

@@ -12,7 +12,7 @@ const stats = [
 function StatsSection() {
   return (
     <section className="section-container flex flex-col items-center gap-12">
-      <h2 className="max-w-[760px] text-center font-sans text-[clamp(1.75rem,3.2vw,2.5rem)] leading-[1.3] font-medium tracking-[-0.025em] text-text-inverse/70">
+      <h2 className="max-w-190 text-center font-sans text-[clamp(1.75rem,3.2vw,2.5rem)] leading-[1.3] font-medium tracking-tight text-text-inverse/70">
         Assisting over{" "}
         <span className="text-text-inverse">15,000 job seekers</span> find their
         dream positions.
