@@ -1,4 +1,5 @@
 import { FeaturesSection } from "@/components/sections/features-section";
+import { FooterSection } from "@/components/sections/footer-section";
 import { HeroSearchSection } from "@/components/sections/hero-search-section";
 import { JobDiscoverySection } from "@/components/sections/job-discovery-section";
 import { StatsSection } from "@/components/sections/stats-section";
@@ -15,6 +16,7 @@ export default function Home() {
       </div>
       <JobDiscoverySection />
       <FeaturesSection />
+      <FooterSection />
     </main>
   );
 }

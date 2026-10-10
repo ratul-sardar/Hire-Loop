@@ -1,4 +1,5 @@
 import { JobCard } from "@/components/shared/job-card";
+import { PrimaryCta } from "@/components/shared/primary-cta";
 import { SectionBadge } from "@/components/shared/section-badge";
 
 const jobs = [
@@ -69,12 +70,9 @@ function JobDiscoverySection() {
         ))}
       </div>
 
-      <a
-        href="#jobs"
-        className="mt-10 inline-flex h-14 items-center justify-center rounded-xl border border-border bg-text-inverse px-6 text-body-md font-medium text-background transition-colors hover:bg-text-inverse/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-      >
+      <PrimaryCta href="#jobs" className="mt-10">
         View all job openings
-      </a>
+      </PrimaryCta>
     </section>
   );
 }
