@@ -17,12 +17,7 @@ export default function PricingSection() {
       cardTitle: "Starter",
       cardPrice: "$0",
       cardPriceDuration: renewCycle,
-      cardFeatures: [
-        "Daily AI match brief (top 5)",
-        "Verified salary bands",
-        "Company insight dashboards",
-        "1‑click apply, unlimited",
-      ],
+      cardFeatures: ["Basic profile", "email alerts"],
       ctaLink: "/",
     },
     {
@@ -32,10 +27,9 @@ export default function PricingSection() {
       cardPrice: renewCycle === "/month" ? "$19" : "$171",
       cardPriceDuration: renewCycle,
       cardFeatures: [
-        "Daily AI match brief (top 5)",
-        "Verified salary bands",
-        "Company insight dashboards",
-        "1‑click apply, unlimited",
+        "Everything from Starter Plan",
+        "Application tracking",
+        "Salary insights",
       ],
       ctaLink: "/",
     },
@@ -46,10 +40,10 @@ export default function PricingSection() {
       cardPrice: renewCycle === "/month" ? "$39" : "$351",
       cardPriceDuration: renewCycle,
       cardFeatures: [
-        "Daily AI match brief (top 5)",
-        "Verified salary bands",
-        "Company insight dashboards",
-        "1‑click apply, unlimited",
+        "Everything from Starter and Growth Plan",
+        "Profile boost",
+        "Early access to new jobs",
+        "Priority support",
       ],
       ctaLink: "/",
     },
@@ -88,7 +82,7 @@ export default function PricingSection() {
             </button>
           </div>
 
-          <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {pricingData.map(
               ({
                 isHighlighted,
@@ -100,6 +94,7 @@ export default function PricingSection() {
                 ctaLink,
               }) => (
                 <PricingCard
+                  className="h-fit"
                   key={cardTitle}
                   isHighlighted={isHighlighted}
                   Icon={Icon}

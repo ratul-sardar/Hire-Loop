@@ -4,7 +4,7 @@ import Image from "next/image";
 const links = [
   { href: "#jobs", label: "Browse Jobs" },
   { href: "#company", label: "Company" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 const actionClassName =
