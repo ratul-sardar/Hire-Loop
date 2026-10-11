@@ -1,5 +1,5 @@
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
-import { betterAuth } from "better-auth";
+import { APIError, betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI as string;
@@ -13,5 +13,30 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        enum: ["seeker", "recruiter"],
+        required: true,
+      },
+    },
+  },
+
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          const allowed = ["seeker", "recruiter"];
+          if (!allowed.includes(user.role as string)) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Invalid role",
+            });
+          }
+          return { data: user };
+        },
+      },
+    },
   },
 });
