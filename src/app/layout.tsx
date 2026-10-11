@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SiteNavbar } from "@/components/ui/site-navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`dark ${manrope.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">
+        <Toaster position="top-left" />
         <SiteNavbar />
         {children}
       </body>

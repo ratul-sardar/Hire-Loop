@@ -8,10 +8,10 @@ const client = new MongoClient(uri);
 const db = client.db("HireLoop");
 
 export const auth = betterAuth({
-	database: mongodbAdapter(db, {
-		client,
-	}),
-	emailAndPassword: {
-		enabled: true,
-	},
+  database: mongodbAdapter(db, {
+    client,
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
 });
