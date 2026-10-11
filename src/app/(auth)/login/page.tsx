@@ -1,11 +1,10 @@
 "use client";
 
-import { CircleUserRound, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -15,6 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -43,15 +43,14 @@ function GoogleIcon(props: React.ComponentProps<"svg">) {
 	);
 }
 
-export default function SignUpPage() {
+export default function LoginPage() {
 	const router = useRouter();
 	const { data: session, isPending: isSessionPending } =
 		authClient.useSession();
 
-	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [image, setImage] = useState("");
+	const [rememberMe, setRememberMe] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
@@ -64,43 +63,28 @@ export default function SignUpPage() {
 		e.preventDefault();
 		if (isLoading) return;
 
-		if (!name.trim()) {
-			toast.error("Please enter your name.");
-			return;
-		}
-		if (!email.trim()) {
-			toast.error("Please enter a valid email address.");
-			return;
-		}
-		if (password.length < 8) {
-			toast.error("Password must be at least 8 characters long.");
-			return;
-		}
-
 		setIsLoading(true);
 
 		try {
-			const { error } = await authClient.signUp.email({
-				name: name.trim(),
-				email: email.trim(),
+			const { error } = await authClient.signIn.email({
+				email,
 				password,
-				image: image.trim() || "",
+				rememberMe,
 			});
 
 			if (error) {
 				toast.error(
-					error.message || "Failed to create account. Please try again.",
+					error.message || "Failed to sign in. Please check your credentials.",
 				);
-				console.log(error);
 				setIsLoading(false);
 				return;
 			}
 
-			toast.success("Account created successfully! Welcome to HireLoop.");
+			toast.success("Welcome back! Signed in successfully.");
 			router.push("/");
 			router.refresh();
 		} catch {
-			toast.error("An unexpected error occurred while creating your account.");
+			toast.error("An unexpected error occurred while signing in.");
 			setIsLoading(false);
 		}
 	};
@@ -111,39 +95,20 @@ export default function SignUpPage() {
 
 	return (
 		<main className="relative flex min-h-screen items-center justify-center bg-black px-4 py-28">
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-brand/10 via-transparent to-transparent pointer-events-none" />
+			<div className="absolute inset-0 bg-[radial-gradient(circle_at_top,var(--tw-gradient-stops))] from-brand/10 via-transparent to-transparent pointer-events-none" />
 
 			<Card className="relative w-full max-w-md border border-white/10 bg-neutral-900/95 text-text-inverse shadow-2xl backdrop-blur-md">
 				<CardHeader className="gap-2 text-center">
 					<CardTitle className="font-heading text-2xl font-bold tracking-tight">
-						Create an account
+						Welcome back
 					</CardTitle>
 					<CardDescription className="text-neutral-400">
-						Join HireLoop today to find your next opportunity
+						Sign in to your HireLoop account to continue
 					</CardDescription>
 				</CardHeader>
 
 				<CardContent className="flex flex-col gap-6">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-						<div className="flex flex-col gap-2">
-							<Label
-								htmlFor="name"
-								className="text-sm font-medium text-neutral-200"
-							>
-								Full Name
-							</Label>
-							<Input
-								id="name"
-								type="text"
-								placeholder="Jane Doe"
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-								required
-								autoComplete="name"
-								className="h-10 border-white/15 bg-neutral-950 text-text-inverse placeholder:text-neutral-500 focus-visible:border-brand focus-visible:ring-brand/30"
-							/>
-						</div>
-
 						<div className="flex flex-col gap-2">
 							<Label
 								htmlFor="email"
@@ -164,50 +129,38 @@ export default function SignUpPage() {
 						</div>
 
 						<div className="flex flex-col gap-2">
-							<Label
-								htmlFor="password"
-								className="text-sm font-medium text-neutral-200"
-							>
-								Password
-							</Label>
+							<div className="flex items-center justify-between">
+								<Label
+									htmlFor="password"
+									className="text-sm font-medium text-neutral-200"
+								>
+									Password
+								</Label>
+							</div>
 							<Input
 								id="password"
 								type="password"
-								placeholder="At least 8 characters"
+								placeholder="••••••••"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								required
-								autoComplete="new-password"
+								autoComplete="current-password"
 								className="h-10 border-white/15 bg-neutral-950 text-text-inverse placeholder:text-neutral-500 focus-visible:border-brand focus-visible:ring-brand/30"
 							/>
 						</div>
 
-						<div className="flex flex-col gap-2">
-							<div className="flex items-center justify-between">
-								<Label
-									htmlFor="image"
-									className="text-sm font-medium text-neutral-200"
-								>
-									Profile Image URL (Optional)
-								</Label>
-								{image.trim() ? (
-									<Avatar className="size-6 border border-white/20">
-										<AvatarImage src={image.trim()} alt="Avatar preview" />
-										<AvatarFallback>
-											<CircleUserRound className="size-4" />
-										</AvatarFallback>
-									</Avatar>
-								) : null}
-							</div>
-							<Input
-								id="image"
-								type="url"
-								placeholder="https://example.com/avatar.jpg"
-								value={image}
-								onChange={(e) => setImage(e.target.value)}
-								autoComplete="photo"
-								className="h-10 border-white/15 bg-neutral-950 text-text-inverse placeholder:text-neutral-500 focus-visible:border-brand focus-visible:ring-brand/30"
+						<div className="flex items-center gap-2.5 pt-1">
+							<Checkbox
+								id="remember-me"
+								checked={rememberMe}
+								onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
 							/>
+							<Label
+								htmlFor="remember-me"
+								className="cursor-pointer text-sm font-normal text-neutral-300"
+							>
+								Remember me
+							</Label>
 						</div>
 
 						<Button
@@ -218,10 +171,10 @@ export default function SignUpPage() {
 							{isLoading ? (
 								<>
 									<Loader2 className="size-4 animate-spin" />
-									Creating account...
+									Signing in...
 								</>
 							) : (
-								"Create Account"
+								"Sign In"
 							)}
 						</Button>
 					</form>
@@ -245,12 +198,12 @@ export default function SignUpPage() {
 				</CardContent>
 
 				<CardFooter className="flex items-center justify-center border-t border-white/10 bg-neutral-950/50 py-4 text-center text-sm text-neutral-400">
-					<span>Already have an account?</span>
+					<span>Don&apos;t have an account?</span>
 					<Link
-						href="/login"
+						href="/sign-up"
 						className="ml-1.5 font-semibold text-brand transition-colors hover:underline hover:text-brand-soft"
 					>
-						Sign in
+						Sign up
 					</Link>
 				</CardFooter>
 			</Card>
