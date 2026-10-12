@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const manrope = Manrope({
 	variable: "--font-manrope",
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 		>
 			<body className="relative min-h-full flex flex-col">
 				<Toaster position="top-right" />
-				{children}
+				<TooltipProvider>{children}</TooltipProvider>
 			</body>
 		</html>
 	);

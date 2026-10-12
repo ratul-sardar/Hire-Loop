@@ -1,3 +1,3 @@
 export default function DashboardPage() {
-	return <h6>DashBoard</h6>;
+	return <h6>DashBoard page.tsx</h6>;
 }
