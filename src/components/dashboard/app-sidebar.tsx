@@ -18,7 +18,7 @@ import {
 	Wallet,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,11 +33,24 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { authClient } from "@/lib/auth-client";
 
+type User =
+	| {
+			id: string;
+			createdAt: Date;
+			updatedAt: Date;
+			email: string;
+			emailVerified: boolean;
+			name: string;
+			image?: string | null | undefined;
+			role: string;
+	  }
+	| undefined;
 type Role = "seeker" | "recruiter" | "admin";
 type NavItem = { title: string; href: string; icon: LucideIcon };
 
-// 1. Links per role: the only thing that changes between roles
+// 1. Links per role
 const roleLinks: Record<Role, NavItem[]> = {
 	seeker: [
 		{ title: "Overview", href: "/dashboard/seeker", icon: LayoutDashboard },
@@ -97,7 +110,7 @@ const roleLinks: Record<Role, NavItem[]> = {
 	],
 };
 
-// 2. Public links: same for everyone
+// 2. Public links (same for everyone)
 const publicLinks: NavItem[] = [
 	{ title: "Home", href: "/", icon: Home },
 	{ title: "Browse Jobs", href: "/jobs", icon: Search },
@@ -105,25 +118,24 @@ const publicLinks: NavItem[] = [
 	{ title: "Pricing", href: "/pricing", icon: Tag },
 ];
 
-type AppSidebarProps = {
-	user: { name: string; email: string; image?: string; role: Role };
-	onLogout: () => void; // end the session, then redirect to "/"
-};
-
-const userDemo = {
-	name: "Ratul",
-	email: "ratul@example.com",
-	role: "seeker" as const, // try "recruiter" or "admin"
-};
-
-export default function AppSidebar({
-	user = userDemo,
-	onLogout,
-}: AppSidebarProps) {
+export default function AppSidebar({ user }: { user: User }) {
 	const pathname = usePathname();
+	const router = useRouter();
 	const { setOpenMobile } = useSidebar();
 
-	// 3. One renderer for both groups
+	// fall back to "seeker" if the role is missing or unknown
+	const role = (user?.role in roleLinks ? user?.role : "seeker") as Role;
+
+	// 3. Logout lives here because authClient is client-only
+	const handleLogout = async () => {
+		await authClient.signOut({
+			fetchOptions: {
+				onSuccess: () => router.push("/"),
+			},
+		});
+	};
+
+	// 4. One renderer for both groups
 	const renderLinks = (items: NavItem[]) => (
 		<SidebarMenu>
 			{items.map((item) => (
@@ -150,15 +162,15 @@ export default function AppSidebar({
 				</Link>
 				<div className="flex items-center gap-3">
 					<Avatar>
-						<AvatarImage src={user.image} alt={user.name} />
-						<AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+						<AvatarImage src={user?.image ?? undefined} alt={user?.name} />
+						<AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 					</Avatar>
 					<div className="min-w-0 text-sm">
-						<p className="truncate font-medium">{user.name}</p>
+						<p className="truncate font-medium">{user?.name}</p>
 						<p className="truncate text-xs text-muted-foreground">
-							{user.email}
+							{user?.email}
 						</p>
-						<p className="text-xs capitalize text-primary">{user.role}</p>
+						<p className="text-xs capitalize text-primary">{role}</p>
 					</div>
 				</div>
 			</SidebarHeader>
@@ -166,7 +178,7 @@ export default function AppSidebar({
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>Dashboard</SidebarGroupLabel>
-					{renderLinks(roleLinks[user.role])}
+					{renderLinks(roleLinks[role])}
 				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupLabel>Explore</SidebarGroupLabel>
@@ -178,7 +190,7 @@ export default function AppSidebar({
 				<Button
 					variant="outline"
 					className="w-full justify-start"
-					onClick={onLogout}
+					onClick={handleLogout}
 				>
 					<LogOut /> Logout
 				</Button>
